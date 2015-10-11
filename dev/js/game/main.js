@@ -115,64 +115,65 @@ function eachClones (cb) {
   //console.timeEnd('each');
 }
 
-function animateAllClones (anim) {
+function updateClones(vx, vy, anim) {
   eachClones(function (clone) {
-    clone.animations.play(anim);
-  })
-}
 
-function setFrameForAllClones (frame) {
-  eachClones(function (clone) {
-    clone.frame = frame;
-  })
-}
+    if (vx) {
+      clone.body.velocity.x = vx;
+    }
+    if (vy) {
+      clone.body.velocity.y = vy;
+    }
 
-function controlClones () {
-  //var onEachClone = iterateClones;
-  //var onEachClone = eachClones;
+    if (anim) {
+      clone.animations.play(anim);
+    }
 
-  var clone = clones.getFirstExists
-
-  onEachClone(function (clone) {
-
-    if (cursors.left.isDown) {
-      clone.body.velocity.x = -150;
-      if (facing !== "left") {
-        facing = "left";
-        animateAllClones('left');
-      }
-    } else if (cursors.right.isDown) {
-      clone.body.velocity.x = 150;
-      if (facing !== "right") {
-        facing = "right";
-        animateAllClones('right');
-      }
-    } else if (clone.body.touching.down) {
-      if (Math.abs(clone.body.velocity.x) > 10) {
-        clone.body.velocity.x *= 0.66;
-      } else {
-        clone.body.velocity.x = 0;
-      }
+    if (Math.abs(clone.body.velocity.x) > 10) {
+      clone.body.velocity.x *= 0.66;
+    } else {
+      clone.body.velocity.x = 0;
       if (facing === "left") {
         clone.frame = 1;
       } else if (facing === "right") {
-        try {
-          clone.frame = 4;
-        } catch (er) {
-          clone.frame = 0;
-        }
+        clone.frame = 4;
       }
     }
-    if (cursors.up.isDown && clone.body.touching.down) {
-      if (clone.body.touching.down) {
-          clone.body.velocity.y = -250;
-      }
-    }
+
+
+
     if (!clone.body.touching.down) {
       var jumpAnimation = facing === "left" ? "jump-left" : "jump-right";
       clone.animations.play(jumpAnimation);
     }
-  });
+    if (cursors.up.isDown) {
+      if (clone.body.touching.down) {
+        vy = -250;
+      }
+    }
+
+
+  })
+}
+
+function controlClones () {
+  var vx, vy, anim;
+  if (cursors.left.isDown) {
+    vx = -150;
+    if (facing !== "left") {
+      facing = "left";
+      anim = "left";
+    }
+  } else if (cursors.right.isDown) {
+    vx = 150;
+    if (facing !== "right") {
+      facing = "right";
+      anim = "right";
+    }
+  }
+
+  updateClones(vx, vy, anim);
+
 }
 
 

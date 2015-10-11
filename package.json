@@ -1,0 +1,15 @@
+{
+  "name": "outcloned",
+  "version": "1.0.0",
+  "description": "Gamejam entry for \"mad science\" contest. JS48 #1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matt McFarland",
+  "license": "ISC",
+  "devDependencies": {
+    "bullet-pubsub": "^2.1.0",
+    "phaser": "^2.4.3"
+  }
+}
